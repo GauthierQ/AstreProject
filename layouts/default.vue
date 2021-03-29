@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back-button/>
+    <home-button/>
     <go-to-fav/>
     <Nuxt />
   </div>

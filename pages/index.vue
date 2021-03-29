@@ -2,12 +2,12 @@
   <div class="container">
     <div class="text-center">
       <input
-      type="text"
-      placeholder="Astre"
-      @input="filterData($event.target.value)"
-    />
+        type="text"
+        placeholder="Astre"
+        @input="filterData($event.target.value)"
+      />
     </div>
-    
+
     <div class="filter-section">
       <h3>Filter by planet type</h3>
       <div class="inline">
@@ -57,9 +57,13 @@
     </div>
 
     <br />
-    <div class="text-center " v-for="astre of dataAstres" :key="astre.id">
-      <nuxt-link class="btn-astre" :to="{ name: 'detail', params: { astre: astre } }">
-          {{ astre.name }}
+    <div class="text-center" v-for="astre of dataAstres" :key="astre.id">
+      <nuxt-link
+        class="btn-astre"
+        :to="{ name: 'detail', params: { astre: astre } }"
+      >
+        {{ astre.name }}
+        <planet-icon v-if="astre.isPlanet"/>
       </nuxt-link>
     </div>
   </div>
@@ -67,8 +71,10 @@
 
 <script>
 import axios from "axios";
+import planetIcon from '../components/planetIcon.vue';
 
 export default {
+  components: { planetIcon },
   data() {
     return {
       astres: [],
@@ -91,21 +97,26 @@ export default {
     } catch (e) {
       this.errors.push(e);
     }
+
+    try {
+      const response = await axios.get(
+        `https://api.le-systeme-solaire.net/rest/bodies/`
+      );
+    } catch (e) {
+      this.errors.push(e);
+    }
   },
 
   methods: {
     filterRadio(planet, moon) {
       this.haveMoon = moon;
-
       this.isPlanet = planet;
-
       console.log("having moon : " + this.haveMoon);
       console.log("is Planet : " + this.isPlanet);
       var astresList = this.filterName;
       const ALL_MOONS = "0";
       const PLANETS_WITH_MOONS = "1";
       const PLANETS_WITH_NO_MOONS = "2";
-
       const ALL_PLANETS_AND_MOONS = "0";
       const ONLY_PLANETS = "1";
       const ONLY_MOONS = "2";
@@ -189,6 +200,7 @@ export default {
 }
 
 .btn-astre {
+  position: relative;
   padding: 1em 2em;
   margin: 1em auto !important;
   border: 1px solid #000;
@@ -219,5 +231,11 @@ input {
 }
 .text-center {
   text-align: center;
+}
+
+.svgPlanet {
+  position: absolute;
+  right: 5px;
+  top: 5px;
 }
 </style>

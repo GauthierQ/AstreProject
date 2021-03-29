@@ -6,6 +6,9 @@
       v-bind:class="[isFav ? 'fav-button-activ' : 'fav-button']"
       @click="addToFav($route.params.astre)"
     />
+    <div> Gravité : {{ $route.params.astre.gravity }}</div>
+    <div>Densité : {{ $route.params.astre.density }}</div>
+
     <div class="body">
       <div class="list-of-moon">
         <h3 class="subtitle">Lunes alentours</h3>
@@ -70,16 +73,14 @@ export default {
       this.getAstre();
       this.fav = this.$store.getters["getFavourites"];
       this.isFav = this.fav.includes(this.$route.params.astre);
-        this.$nuxt.refresh()
+      this.$nuxt.refresh();
     },
 
     newParams(param) {
       this.$route.params.astre = param;
       console.log("parm : " + param.name);
       console.log("this.route.params" + this.$route.params.astre.name);
-      this.fav = [],
-      this.isFav = false,
-      this.getAstre();
+      (this.fav = []), (this.isFav = false), this.getAstre();
       this.$forceUpdate();
     },
 
@@ -140,15 +141,15 @@ export default {
   font-weight: normal;
   margin: 1em 0;
   text-align: center;
+  padding: 1em 0;
 }
 
 .btn:hover {
-    cursor: pointer;
-    background-color: #000;
-    color: #fff;
-    transition: all 0.3s;
+  cursor: pointer;
+  background-color: #000;
+  color: #fff;
+  transition: all 0.3s;
 }
-
 
 .list-of-planet {
   text-align: left;
@@ -222,7 +223,7 @@ input {
   border-radius: 100%;
   width: 25px;
   height: 25px;
-  margin: 1em auto 0 auto;
+  margin: 1em auto;
   border: 2px solid #f00;
   background-color: transparent;
 }
@@ -234,7 +235,7 @@ input {
   width: 25px;
   height: 25px;
   padding: 10px;
-  margin: 1em auto 0 auto;
+  margin: 1em auto;
   border: 2px solid #f00;
   background-color: #f00;
 }

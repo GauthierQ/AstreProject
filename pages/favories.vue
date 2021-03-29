@@ -9,6 +9,7 @@
           :to="{ name: 'detail', params: { astre: astre } }"
         >
           {{ astre.name }}
+          <planet-icon v-if="astre.isPlanet" />
         </nuxt-link>
         <button class="btn" @click="removeFav(astre)">Remove</button>
       </div>
@@ -40,14 +41,16 @@ export default {
 
 <style scoped>
 .btn {
+  position: relative;
   border: 1px solid #000;
   color: #000;
   font-size: 1.6em;
   font-weight: normal;
   text-align: center;
   padding: 1em 2em;
-  margin: 2em;
+  margin: 1em;
 }
+
 .btn:hover {
   background-color: #000;
   cursor: pointer;

@@ -1,11 +1,11 @@
 <template>
-  <nuxt-link class="back-button" :to="{ name: 'index' }">Home</nuxt-link>
+  <nuxt-link class="home-button" :to="{ name: 'index' }">Home</nuxt-link>
 </template>
 
 <script>
 export default {
   methods: {
-    backButton() {
+    homeButton() {
       return this.$router.go(-1);
     },
   },
@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style scoped>
-.back-button {
+.home-button {
     position: absolute;
     left: 10%;
     top: 5%;
@@ -23,7 +23,7 @@ export default {
     padding: 1em 2em;
 }
 
-.back-button:hover {
+.home-button:hover {
     cursor: pointer;
     background-color: #000;
     color: #fff;
