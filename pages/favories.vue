@@ -9,7 +9,7 @@
           :to="{ name: 'detail', params: { astre: astre } }"
         >
           {{ astre.name }}
-          <planet-icon v-if="astre.isPlanet" />
+          <planet-icon v-if="astre.isPlanet" /> 
         </nuxt-link>
         <button class="btn" @click="removeFav(astre)">Remove</button>
       </div>
