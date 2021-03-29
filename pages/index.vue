@@ -1,10 +1,13 @@
 <template>
   <div class="container">
-    <input
+    <div class="text-center">
+      <input
       type="text"
       placeholder="Astre"
       @input="filterData($event.target.value)"
     />
+    </div>
+    
     <div class="filter-section">
       <h3>Filter by planet type</h3>
       <div class="inline">
@@ -54,11 +57,9 @@
     </div>
 
     <br />
-    <div v-for="astre of dataAstres" :key="astre.id">
-      <nuxt-link :to="{name:'detail', params:{astre:astre}}">
-        <div class="btn">
+    <div class="text-center " v-for="astre of dataAstres" :key="astre.id">
+      <nuxt-link class="btn-astre" :to="{ name: 'detail', params: { astre: astre } }">
           {{ astre.name }}
-        </div>
       </nuxt-link>
     </div>
   </div>
@@ -101,33 +102,41 @@ export default {
       console.log("having moon : " + this.haveMoon);
       console.log("is Planet : " + this.isPlanet);
       var astresList = this.filterName;
-      const ALL_MOONS = '0'
-      const PLANETS_WITH_MOONS = '1';
-      const PLANETS_WITH_NO_MOONS = '2';
+      const ALL_MOONS = "0";
+      const PLANETS_WITH_MOONS = "1";
+      const PLANETS_WITH_NO_MOONS = "2";
 
-      const ALL_PLANETS_AND_MOONS = '0';
-      const ONLY_PLANETS = '1';
-      const ONLY_MOONS = '2';
+      const ALL_PLANETS_AND_MOONS = "0";
+      const ONLY_PLANETS = "1";
+      const ONLY_MOONS = "2";
 
-      switch(this.haveMoon) {
+      switch (this.haveMoon) {
         case ALL_MOONS:
           this.dataAstres = [...astresList];
           break;
         case PLANETS_WITH_MOONS:
-          this.dataAstres = [...astresList.filter((item) => item.moons != null)];
+          this.dataAstres = [
+            ...astresList.filter((item) => item.moons != null),
+          ];
           break;
         case PLANETS_WITH_NO_MOONS:
-        this.dataAstres = [...astresList.filter((item) => item.moons == null)];
+          this.dataAstres = [
+            ...astresList.filter((item) => item.moons == null),
+          ];
           break;
       }
-      switch(this.isPlanet) {
+      switch (this.isPlanet) {
         case ALL_PLANETS_AND_MOONS:
           break;
         case ONLY_PLANETS:
-          this.dataAstres = [...this.dataAstres.filter((item) => item.isPlanet)];
+          this.dataAstres = [
+            ...this.dataAstres.filter((item) => item.isPlanet),
+          ];
           break;
         case ONLY_MOONS:
-          this.dataAstres = [...this.dataAstres.filter((item) => !item.isPlanet)];
+          this.dataAstres = [
+            ...this.dataAstres.filter((item) => !item.isPlanet),
+          ];
           break;
       }
 
@@ -157,6 +166,7 @@ export default {
 .container {
   display: table !important;
   max-width: 1200px;
+  margin: 5% 10%;
 }
 
 .title {
@@ -178,9 +188,9 @@ export default {
   padding-top: 15px;
 }
 
-.btn {
-  padding: 1em;
-  margin: 1em;
+.btn-astre {
+  padding: 1em 2em;
+  margin: 1em auto !important;
   border: 1px solid #000;
   color: #000;
   font-size: 1.6em;
@@ -190,7 +200,7 @@ export default {
   min-width: calc(15% + 2em);
 }
 
-.btn:hover {
+.btn-astre:hover {
   background-color: #000;
   cursor: pointer;
   color: #fff;
@@ -199,12 +209,15 @@ export default {
 
 input {
   padding: 1em;
-  margin: 1em ;
+  margin: 1em;
   min-width: calc(15% + 2em);
   border: 1px solid grey;
 }
 .inline {
   display: inline;
   width: 100%;
+}
+.text-center {
+  text-align: center;
 }
 </style>

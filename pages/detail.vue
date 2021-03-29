@@ -1,16 +1,9 @@
 <template>
   <div class="container">
-    <backButton class="back" />
     <h2 class="title">{{ $route.params.astre.name }}</h2>
     <div v-if="$route.params.astre.isPlanet">Planète</div>
     <div
-      class="fav-button-actif"
-      v-if="this.fav.includes($route.params.astre)"
-      @click="addToFav($route.params.astre)"
-    />
-    <div
-      class="fav-button"
-      v-if="!this.fav.includes($route.params.astre)"
+      v-bind:class="[isFav ? 'fav-button-activ' : 'fav-button']"
       @click="addToFav($route.params.astre)"
     />
     <div class="body">
@@ -42,44 +35,50 @@
 
 <script>
 import axios from "axios";
-import backButton from "../components/backButton.vue";
 
 export default {
-  components: { backButton },
   data() {
     return {
       moons: [],
       planet: {},
       fav: [],
+      isFav: false,
     };
   },
 
   async created() {
     this.getAstre();
-  },
-
-  computed: {
-    getFav() {
-      this.fav = this.$store.getters["getFavourites"];
-    },
+    this.getFav();
   },
 
   methods: {
+    getFav() {
+      this.fav = this.$store.getters["getFavourites"];
+      this.isFav = this.fav.includes(this.$route.params.astre);
+    },
+
     addToFav(astre) {
       this.fav = this.$store.getters["getFavourites"];
       if (this.fav.includes(astre)) {
         this.$store.commit("remove", astre);
+        this.$toast.error("Remove from Favories").goAway(1000);
       } else {
         this.$store.commit("add", astre);
+        this.$toast.success("Add to Favories").goAway(1000);
       }
       console.log(this.fav);
-      this.$forceUpdate();
+      this.getAstre();
+      this.fav = this.$store.getters["getFavourites"];
+      this.isFav = this.fav.includes(this.$route.params.astre);
+        this.$nuxt.refresh()
     },
 
     newParams(param) {
       this.$route.params.astre = param;
       console.log("parm : " + param.name);
       console.log("this.route.params" + this.$route.params.astre.name);
+      this.fav = [],
+      this.isFav = false,
       this.getAstre();
       this.$forceUpdate();
     },
@@ -129,12 +128,6 @@ export default {
   max-width: 1200px;
 }
 
-.back {
-  left: 10%;
-  top: 5%;
-  position: absolute;
-}
-
 .list-of-moon {
   text-align: left;
   padding: 3em 10em;
@@ -145,18 +138,21 @@ export default {
   color: #000;
   font-size: 1.6em;
   font-weight: normal;
+  margin: 1em 0;
   text-align: center;
 }
+
 .btn:hover {
-  background-color: #000;
-  cursor: pointer;
-  color: #fff;
-  transition: all 0.3s;
+    cursor: pointer;
+    background-color: #000;
+    color: #fff;
+    transition: all 0.3s;
 }
+
 
 .list-of-planet {
   text-align: left;
-  padding: 5em 10em;
+  padding: 3em 10em;
 }
 
 .body {
@@ -226,7 +222,7 @@ input {
   border-radius: 100%;
   width: 25px;
   height: 25px;
-  margin: 0 auto;
+  margin: 1em auto 0 auto;
   border: 2px solid #f00;
   background-color: transparent;
 }
@@ -235,10 +231,10 @@ input {
   color: #f00;
   display: flex;
   border-radius: 100%;
-  min-width: 25px;
-  min-height: 25px;
+  width: 25px;
+  height: 25px;
   padding: 10px;
-  margin: 0 auto;
+  margin: 1em auto 0 auto;
   border: 2px solid #f00;
   background-color: #f00;
 }

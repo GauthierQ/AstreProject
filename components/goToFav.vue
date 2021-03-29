@@ -6,9 +6,7 @@
 export default {
 
   methods: {
-    backButton() {
-        return this.$router.go(-1);
-    }
+    
   },
 };
 </script>
