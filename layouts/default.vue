@@ -1,10 +1,13 @@
 <template>
   <div>
+    <go-to-fav/>
     <Nuxt />
   </div>
 </template>
 
 <style>
+
+
 html {
   font-family:
     'Source Sans Pro',

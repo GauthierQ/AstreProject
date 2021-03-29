@@ -3,6 +3,16 @@
     <backButton class="back" />
     <h2 class="title">{{ $route.params.astre.name }}</h2>
     <div v-if="$route.params.astre.isPlanet">Planète</div>
+    <div
+      class="fav-button-actif"
+      v-if="this.fav.includes($route.params.astre)"
+      @click="addToFav($route.params.astre)"
+    />
+    <div
+      class="fav-button"
+      v-if="!this.fav.includes($route.params.astre)"
+      @click="addToFav($route.params.astre)"
+    />
     <div class="body">
       <div class="list-of-moon">
         <h3 class="subtitle">Lunes alentours</h3>
@@ -40,16 +50,32 @@ export default {
     return {
       moons: [],
       planet: {},
+      fav: [],
     };
   },
-
-
 
   async created() {
     this.getAstre();
   },
 
+  computed: {
+    getFav() {
+      this.fav = this.$store.getters["getFavourites"];
+    },
+  },
+
   methods: {
+    addToFav(astre) {
+      this.fav = this.$store.getters["getFavourites"];
+      if (this.fav.includes(astre)) {
+        this.$store.commit("remove", astre);
+      } else {
+        this.$store.commit("add", astre);
+      }
+      console.log(this.fav);
+      this.$forceUpdate();
+    },
+
     newParams(param) {
       this.$route.params.astre = param;
       console.log("parm : " + param.name);
@@ -83,7 +109,6 @@ export default {
       }
     },
 
-
     async getMoons(url) {
       try {
         console.log("url : " + url);
@@ -98,7 +123,12 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
+.container {
+  display: table !important;
+  max-width: 1200px;
+}
+
 .back {
   left: 10%;
   top: 5%;
@@ -116,6 +146,12 @@ export default {
   font-size: 1.6em;
   font-weight: normal;
   text-align: center;
+}
+.btn:hover {
+  background-color: #000;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s;
 }
 
 .list-of-planet {
@@ -148,7 +184,7 @@ export default {
 
 .subtitle {
   font-weight: 300;
-  font-size: 42px;
+  font-size: 32px;
   color: #526488;
   word-spacing: 5px;
   padding-bottom: 15px;
@@ -182,5 +218,40 @@ input {
   margin: 1em;
   min-width: calc(15% + 2em);
   border: 1px solid grey;
+}
+
+.fav-button {
+  color: #f00;
+  display: flex;
+  border-radius: 100%;
+  width: 25px;
+  height: 25px;
+  margin: 0 auto;
+  border: 2px solid #f00;
+  background-color: transparent;
+}
+
+.fav-button-activ {
+  color: #f00;
+  display: flex;
+  border-radius: 100%;
+  min-width: 25px;
+  min-height: 25px;
+  padding: 10px;
+  margin: 0 auto;
+  border: 2px solid #f00;
+  background-color: #f00;
+}
+
+.fav-button-activ:hover {
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.3s;
+}
+
+.fav-button:hover {
+  cursor: pointer;
+  background-color: #f00;
+  transition: all 0.3s;
 }
 </style>

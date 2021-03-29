@@ -101,33 +101,34 @@ export default {
       console.log("having moon : " + this.haveMoon);
       console.log("is Planet : " + this.isPlanet);
       var astresList = this.filterName;
+      const ALL_MOONS = '0'
+      const PLANETS_WITH_MOONS = '1';
+      const PLANETS_WITH_NO_MOONS = '2';
 
-      if (this.haveMoon == 0 && this.isPlanet == 0) {
-        this.dataAstres = astresList;
-      } else if (this.haveMoon == 0 && this.isPlanet == 1) {
-        this.dataAstres = astresList.filter((item) => item.isPlanet == true);
-      } else if (this.haveMoon == 0 && this.isPlanet == 2) {
-        this.dataAstres = astresList.filter((item) => item.isPlanet == false);
-      } else if (this.haveMoon == 1 && this.isPlanet == 0) {
-        this.dataAstres = astresList.filter((item) => item.moons != null);
-      } else if (this.haveMoon == 1 && this.isPlanet == 1) {
-        this.dataAstres = astresList.filter(
-          (item) => item.moons != null && item.isPlanet == true
-        );
-      } else if (this.haveMoon == 1 && this.isPlanet == 2) {
-        this.dataAstres = astresList.filter(
-          (item) => item.moons != null && item.isPlanet == false
-        );
-      } else if (this.haveMoon == 2 && this.isPlanet == 0) {
-        this.dataAstres = astresList.filter((item) => item.moons == null);
-      } else if (this.haveMoon == 2 && this.isPlanet == 1) {
-        this.dataAstres = astresList.filter(
-          (item) => item.moons == null && item.isPlanet == true
-        );
-      } else {
-        this.dataAstres = astresList.filter(
-          (item) => item.moons == null && item.isPlanet == false
-        );
+      const ALL_PLANETS_AND_MOONS = '0';
+      const ONLY_PLANETS = '1';
+      const ONLY_MOONS = '2';
+
+      switch(this.haveMoon) {
+        case ALL_MOONS:
+          this.dataAstres = [...astresList];
+          break;
+        case PLANETS_WITH_MOONS:
+          this.dataAstres = [...astresList.filter((item) => item.moons != null)];
+          break;
+        case PLANETS_WITH_NO_MOONS:
+        this.dataAstres = [...astresList.filter((item) => item.moons == null)];
+          break;
+      }
+      switch(this.isPlanet) {
+        case ALL_PLANETS_AND_MOONS:
+          break;
+        case ONLY_PLANETS:
+          this.dataAstres = [...this.dataAstres.filter((item) => item.isPlanet)];
+          break;
+        case ONLY_MOONS:
+          this.dataAstres = [...this.dataAstres.filter((item) => !item.isPlanet)];
+          break;
       }
 
       console.log(this.dataAstres.length);
@@ -148,9 +149,9 @@ export default {
 </script> 
 
 
-<style>
+<style scoped>
 .filter-section {
-  padding: 1em 0;
+  padding: 1em 2em;
 }
 
 .container {
@@ -198,7 +199,7 @@ export default {
 
 input {
   padding: 1em;
-  margin: 1em;
+  margin: 1em ;
   min-width: calc(15% + 2em);
   border: 1px solid grey;
 }
