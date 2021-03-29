@@ -3,6 +3,11 @@
 ## Build Setup
 
 ```bash
+
+Welcome to my astre project.
+This school project is develop thanks to Nuxt framework.
+
+
 # install dependencies
 $ npm install
 
